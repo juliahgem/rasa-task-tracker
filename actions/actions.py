@@ -3,6 +3,10 @@
 #
 # See this guide on how to implement these action:
 # https://rasa.com/docs/rasa/custom-actions
+from typing import Text, Dict, Any, List
+
+from rasa_sdk import Action, Tracker
+from rasa_sdk.executor import CollectingDispatcher
 
 
 # This is a simple example for a custom action which utters "Hello World!"
@@ -25,3 +29,18 @@
 #         dispatcher.utter_message(text="Hello World!")
 #
 #         return []
+
+
+class ActionCreateTask(Action):
+    def name(self) -> Text:
+        return "create_task"
+
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        task_name = tracker.get_slot("task_name")
+        dispatcher.utter_message(text=f"Задача {task_name} создана!")
+
+        return []

@@ -5,35 +5,10 @@ rules:
   - intent: greet
   - action: utter_greet
 
-- rule: Создание задачи
+- rule: Создать задачу
   steps:
-  - intent: create_task
-  - action: utter_ask_task_title
-
-- rule: Ввод заголовка задачи
-  steps:
-  - action: task_form
-  - active_loop: task_form
-
-- rule: Список задач
-  steps:
-  - intent: list_tasks
-  - action: actions.list_tasks
-
-- rule: Просмотр задачи
-  steps:
-  - intent: view_task
-  - action: actions.view_task
-
-- rule: Обновление статуса задачи
-  steps:
-  - intent: update_task_status
-  - action: actions.update_task_status
-
-- rule: Удаление задачи
-  steps:
-  - intent: delete_task
-  - action: actions.delete_task
+  - intent: add_task
+  - action: create_task
 
 - rule: Подтверждение завершения разговора
   condition:
@@ -41,3 +16,28 @@ rules:
   steps:
   - intent: goodbye
   - action: utter_goodbye
+#
+#- rule: Ввод заголовка задачи
+#  steps:
+#  - action: task_form
+#  - active_loop: task_form
+#
+#- rule: Список задач
+#  steps:
+#  - intent: list_tasks
+#  - action: actions.list_tasks
+#
+#- rule: Просмотр задачи
+#  steps:
+#  - intent: view_task
+#  - action: actions.view_task
+#
+#- rule: Обновление статуса задачи
+#  steps:
+#  - intent: update_task_status
+#  - action: actions.update_task_status
+#
+#- rule: Удаление задачи
+#  steps:
+#  - intent: delete_task
+#  - action: actions.delete_task
