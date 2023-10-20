@@ -3,6 +3,21 @@ version: "3.1"
 intents:
   - greet
   - goodbye
+  - add_task
+
+actions:
+  - create_task
+
+entities:
+  - task_name
+
+slots:
+  task_name:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    mappings:
+      - type: from_entity
+        entity: task_name
 
 
 responses:
