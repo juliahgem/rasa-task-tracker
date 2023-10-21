@@ -31,5 +31,14 @@ def get_cursor():
 
 
 def execute(query, values):
-    Database.cursor.execute(query, values)
-    Database.connection.commit()
+    try:
+        Database.cursor.execute(query, values)
+        Database.connection.commit()
+    except Exception as inst:
+        print(type(inst))
+        print(inst.args)
+
+
+def fetch_all_from(table: str):
+    Database.cursor.execute("""SELECT * FROM "%s";""" % table)
+    return Database.cursor.fetchall()

@@ -11,7 +11,7 @@ from psycopg2._psycopg import cursor
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
-from service.Tasks import add_task
+from service.Tasks import add_task, update_description, get_all_tasks
 
 
 # This is a simple example for a custom action which utters "Hello World!"
@@ -53,6 +53,28 @@ class ActionCreateTask(Action):
             dispatcher.utter_message(text=f"Задача \"{task_name}\" создана!")
         except Exception as inst:
             dispatcher.utter_message(text=f"Задача не была создана")
+            print(type(inst))
+            print(inst.args)
+
+        return []
+
+
+class ActionShowAllTasks(Action):
+    def name(self) -> Text:
+        return "show_all_tasks"
+
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        try:
+            tasks = get_all_tasks()
+            lst = ""
+            for task in tasks:
+                lst += task[0]+" "+task[1]+"\n"
+            dispatcher.utter_message(text=lst)
+        except Exception as inst:
             print(type(inst))
             print(inst.args)
 
