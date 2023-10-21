@@ -3,10 +3,15 @@
 #
 # See this guide on how to implement these action:
 # https://rasa.com/docs/rasa/custom-actions
+import datetime
 from typing import Text, Dict, Any, List
 
+import psycopg2
+from psycopg2._psycopg import cursor
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
+
+from service.Tasks import add_task
 
 
 # This is a simple example for a custom action which utters "Hello World!"
@@ -41,6 +46,14 @@ class ActionCreateTask(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         task_name = tracker.get_slot("task_name")
-        dispatcher.utter_message(text=f"Задача {task_name} создана!")
+        if len(task_name) > 0:
+            task_name = task_name[0].upper() + task_name[1:]
+        try:
+            add_task(task_name)
+            dispatcher.utter_message(text=f"Задача \"{task_name}\" создана!")
+        except Exception as inst:
+            dispatcher.utter_message(text=f"Задача не была создана")
+            print(type(inst))
+            print(inst.args)
 
         return []
