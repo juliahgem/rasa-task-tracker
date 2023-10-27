@@ -10,6 +10,16 @@ rules:
   - intent: add_task
   - action: create_task
 
+- rule: Показать все задачи
+  steps:
+  - intent: show_all_tasks
+  - action: show_all_tasks
+
+- rule: Выполнить задачу
+  steps:
+    - intent: complete_task
+    - action: delete_task
+
 - rule: Подтверждение завершения разговора
   condition:
   - active_loop: null

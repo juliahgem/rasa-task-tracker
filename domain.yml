@@ -4,12 +4,17 @@ intents:
   - greet
   - goodbye
   - add_task
+  - show_all_tasks
+  - complete_task
 
 actions:
   - create_task
+  - show_all_tasks
+  - delete_task
 
 entities:
   - task_name
+  - task_id
 
 slots:
   task_name:
@@ -18,6 +23,13 @@ slots:
     mappings:
       - type: from_entity
         entity: task_name
+
+  task_id:
+    type: float
+    initial_value: null
+    mappings:
+      - type: from_entity
+        entity: task_id
 
 
 responses:
