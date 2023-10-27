@@ -11,29 +11,7 @@ from psycopg2._psycopg import cursor
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
-from service.Tasks import add_task, update_description, get_all_tasks
-
-
-# This is a simple example for a custom action which utters "Hello World!"
-
-# from typing import Any, Text, Dict, List
-#
-# from rasa_sdk import Action, Tracker
-# from rasa_sdk.executor import CollectingDispatcher
-#
-#
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
+from service.Tasks import add_task, update_description, get_all_tasks, delete_task
 
 
 class ActionCreateTask(Action):
@@ -72,9 +50,30 @@ class ActionShowAllTasks(Action):
             tasks = get_all_tasks()
             lst = ""
             for task in tasks:
-                lst += task[0]+" "+task[1]+"\n"
+                lst += str(task[0])+" "+str(task[1])+"\n"
             dispatcher.utter_message(text=lst)
         except Exception as inst:
+            print(type(inst))
+            print(inst.args)
+
+        return []
+
+
+class DeleteTask(Action):
+    def name(self) -> Text:
+        return "delete_task"
+
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        try:
+            task_id = tracker.get_slot("task_id")
+            delete_task(task_id)
+            dispatcher.utter_message(text=f"Задача #{task_id} была удалена")
+        except Exception as inst:
+            dispatcher.utter_message(text=f"Задача #{task_id} не была найдена")
             print(type(inst))
             print(inst.args)
 

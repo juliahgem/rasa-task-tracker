@@ -38,3 +38,9 @@ def update_deadline_dt(task_id: int, deadline_dt: datetime):
 
 def get_all_tasks():
     return Repository.fetch_all_from("tasks")
+
+
+def delete_task(task_id: int):
+    query = """DELETE FROM tasks WHERE task_id = %s"""
+    values = (task_id,)
+    Repository.execute(query, values)
